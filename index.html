@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sathi Elizabeth Portfolio- Portfolio Website</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        /* Custom Parallax logic because standard Tailwind utility for attachment varies by browser */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+        }
+        
+        /* Navbar transition */
+        nav.scrolled {
+            background-color: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 0;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+    </style>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script>
+  // আপনার Firebase Config এখানে বসান
+  const firebaseConfig = {
+   apiKey: "AIzaSyCLrjmaro1sdet-JaKNi-8Was4PS_GDtxE",
+  authDomain: "sathieliza.firebaseapp.com",
+  projectId: "sathieliza",
+  storageBucket: "sathieliza.firebasestorage.app",
+  messagingSenderId: "542540248936",
+  appId: "1:542540248936:web:3695a464ba6b7dee7708dd"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Contact Form Logic
+  const contactForm = document.querySelector('form');
+  
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Form Data Collect
+    const name = contactForm.querySelector('input[placeholder="John Doe"]').value;
+    const email = contactForm.querySelector('input[placeholder="john@example.com"]').value;
+    const subject = contactForm.querySelector('select').value;
+    const message = contactForm.querySelector('textarea').value;
+
+    // Firestore-এ ডেটা সেভ করা
+    db.collection("contacts").add({
+      name: name,
+      email: email,
+      subject: subject,
+      message: message,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+        alert("Success! Your message has been sent.");
+        contactForm.reset();
+        
+        // মেইল পাঠানোর জন্য সরাসরি ইউজারকে মেইল অ্যাপে নিয়ে যাওয়া (Optional)
+        window.location.href = `mailto:theotonius2012@gmail.com?subject=${subject}&body=Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+        alert("Something went wrong. Please try again.");
+    });
+  });
+</script>
+
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500 py-6">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold text-white tracking-tighter">Sathi<span class="text-cyan-400">Eliza</span></a>
+        
+        <div class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest text-white/80">
+            <a href="#home" class="hover:text-cyan-400 transition">Home</a>
+            <a href="#service" class="hover:text-cyan-400 transition">Service</a>
+            <a href="#portfolio" class="hover:text-cyan-400 transition">Portfolio</a>
+            <a href="#testimony" class="hover:text-cyan-400 transition">Testimony</a>
+            <a href="#contact" class="hover:text-cyan-400 transition">Contact</a>
+        </div>
+
+        <button id="menu-btn" class="md:hidden text-white text-2xl focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<div id="mobile-menu" class="fixed inset-0 z-[60] bg-slate-900/95 backdrop-blur-lg transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+    <div class="flex flex-col h-full justify-center items-center space-y-8 text-2xl font-semibold text-white">
+        <button id="close-btn" class="absolute top-8 right-8 text-3xl text-white">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <a href="#home" class="mobile-link hover:text-cyan-400 transition">Home</a>
+        <a href="#service" class="mobile-link hover:text-cyan-400 transition">Service</a>
+        <a href="#portfolio" class="hover:text-cyan-400 transition">Portfolio</a>
+        <a href="#testimony" class="mobile-link hover:text-cyan-400 transition">Testimony</a>
+        <a href="#contact" class="mobile-link hover:text-cyan-400 transition">Contact</a>
+    </div>
+</div>
+
+    <header id="home" class="relative h-screen flex items-center justify-center overflow-hidden parallax-bg" 
+            style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920');">
+        
+        <div id="particles-js"></div>
+
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
+                Design the <span class="text-cyan-400">Future</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-light">
+                High-performance solutions for modern brands. We build digital experiences that matter.
+            </p>
+            <a href="#service" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold py-4 px-10 rounded-full transition-all transform hover:scale-105 shadow-xl">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+   <section id="service" class="py-24 bg-slate-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h4 class="text-cyan-500 font-bold uppercase tracking-widest text-sm mb-2">Our Expertise</h4>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Digital Marketing <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-600">Solutions</span></h2>
+            <p class="text-slate-600 max-w-2xl mx-auto text-lg leading-relaxed">We provide data-driven digital marketing strategies designed to amplify your brand’s online presence and drive sustainable growth.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-2xl hover:border-cyan-200 transition-all duration-300">
+                <div class="w-14 h-14 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-search-dollar text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">SEO Optimization</h3>
+                <p class="text-slate-600 leading-relaxed mb-4">Improve your website’s visibility on search engines with our advanced keyword research and on-page SEO techniques.</p>
+                <a href="#" class="text-cyan-600 font-semibold inline-flex items-center group-hover:underline">
+                    Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-2xl hover:border-blue-200 transition-all duration-300">
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Social Media Marketing</h3>
+                <p class="text-slate-600 leading-relaxed mb-4">Enhance brand awareness and customer engagement across Facebook, Instagram, and LinkedIn with creative campaigns.</p>
+                <a href="#" class="text-blue-600 font-semibold inline-flex items-center group-hover:underline">
+                    Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-2xl hover:border-amber-200 transition-all duration-300">
+                <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-ad text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">PPC & Paid Media</h3>
+                <p class="text-slate-600 leading-relaxed mb-4">Drive instant traffic and high-quality leads through targeted Google Ads and Meta advertising strategies.</p>
+                <a href="#" class="text-amber-600 font-semibold inline-flex items-center group-hover:underline">
+                    Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-2xl hover:border-purple-200 transition-all duration-300">
+                <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-pen-nib text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Content Strategy</h3>
+                <p class="text-slate-600 leading-relaxed mb-4">We tell your brand story through high-impact blog posts, video scripts, and engaging visual content.</p>
+                <a href="#" class="text-purple-600 font-semibold inline-flex items-center group-hover:underline">
+                    Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-2xl hover:border-rose-200 transition-all duration-300">
+                <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-rose-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-envelope-open-text text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Email Automation</h3>
+                <p class="text-slate-600 leading-relaxed mb-4">Nurture leads and retain customers with automated email workflows that deliver personalized value.</p>
+                <a href="#" class="text-rose-600 font-semibold inline-flex items-center group-hover:underline">
+                    Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+            <div class="group bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-2xl hover:border-emerald-200 transition-all duration-300">
+                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                    <i class="fas fa-chart-pie text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-3">Market Analytics</h3>
+                <p class="text-slate-600 leading-relaxed mb-4">We analyze performance data to optimize your marketing campaigns and ensure the highest possible ROI.</p>
+                <a href="#" class="text-emerald-600 font-semibold inline-flex items-center group-hover:underline">
+                    Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+   <section id="portfolio" class="py-24 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h4 class="text-cyan-500 font-bold uppercase tracking-widest text-sm mb-2">Our Work</h4>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Recent Case Studies</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">Click on categories to filter our successful marketing campaigns.</p>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button class="filter-btn active px-6 py-2 rounded-full border-2 border-slate-900 bg-slate-900 text-white font-semibold transition-all" data-filter="all">All</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 hover:border-slate-900 font-semibold transition-all" data-filter="seo">SEO</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 hover:border-slate-900 font-semibold transition-all" data-filter="smm">Social Media</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 hover:border-slate-900 font-semibold transition-all" data-filter="ads">Google Ads</button>
+            <button class="filter-btn px-6 py-2 rounded-full border-2 border-slate-200 hover:border-slate-900 font-semibold transition-all" data-filter="content">Content</button>
+        </div>
+
+        <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="portfolio-item group relative overflow-hidden rounded-3xl bg-slate-100 h-80 shadow-lg transition-all duration-500" data-category="seo">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600" alt="SEO" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent flex flex-col justify-end p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-cyan-400 text-sm font-bold uppercase">SEO Optimization</span>
+                    <h3 class="text-white text-2xl font-bold">E-commerce Growth</h3>
+                </div>
+            </div>
+
+            <div class="portfolio-item group relative overflow-hidden rounded-3xl bg-slate-100 h-80 shadow-lg transition-all duration-500" data-category="smm">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600" alt="SMM" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent flex flex-col justify-end p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-blue-400 text-sm font-bold uppercase">Social Media</span>
+                    <h3 class="text-white text-2xl font-bold">Brand Awareness</h3>
+                </div>
+            </div>
+
+            <div class="portfolio-item group relative overflow-hidden rounded-3xl bg-slate-100 h-80 shadow-lg transition-all duration-500" data-category="ads">
+                <img src="https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=600" alt="Ads" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent flex flex-col justify-end p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-amber-400 text-sm font-bold uppercase">Google Ads</span>
+                    <h3 class="text-white text-2xl font-bold">ROI Maximize</h3>
+                </div>
+            </div>
+
+            <div class="portfolio-item group relative overflow-hidden rounded-3xl bg-slate-100 h-80 shadow-lg transition-all duration-500" data-category="content">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=600" alt="Content" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent flex flex-col justify-end p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-purple-400 text-sm font-bold uppercase">Content Strategy</span>
+                    <h3 class="text-white text-2xl font-bold">Authority Building</h3>
+                </div>
+            </div>
+
+            <div class="portfolio-item group relative overflow-hidden rounded-3xl bg-slate-100 h-80 shadow-lg transition-all duration-500" data-category="smm">
+                <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600" alt="SMM" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent flex flex-col justify-end p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-blue-400 text-sm font-bold uppercase">Facebook Ads</span>
+                    <h3 class="text-white text-2xl font-bold">Lead Generation</h3>
+                </div>
+            </div>
+
+            <div class="portfolio-item group relative overflow-hidden rounded-3xl bg-slate-100 h-80 shadow-lg transition-all duration-500" data-category="seo">
+                <img src="https://images.unsplash.com/photo-1571721795195-a2ca2d3370a9?q=80&w=600" alt="SEO" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent flex flex-col justify-end p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-cyan-400 text-sm font-bold uppercase">SEO Audit</span>
+                    <h3 class="text-white text-2xl font-bold">Ranking Recovery</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+   <section id="testimony" class="py-24 bg-slate-900 overflow-hidden">
+    <div class="container mx-auto px-6 text-center">
+        <div class="mb-16">
+            <h4 class="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-2">Success Stories</h4>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">What Our Clients <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Say About Us</span></h2>
+            <div class="w-20 h-1 bg-cyan-500 mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+            
+            <div class="bg-slate-800/50 p-8 rounded-3xl border border-slate-700 hover:border-cyan-500 transition-all duration-300 relative group">
+                <div class="absolute -top-4 -right-4 bg-cyan-500 text-slate-900 w-10 h-10 rounded-full flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+                <div class="flex text-amber-400 mb-4 text-sm">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-slate-300 italic mb-6 leading-relaxed">"Their SEO strategy completely changed our business. Our organic traffic grew by 200% in just 4 months. Highly professional team!"</p>
+                <div class="flex items-center space-x-4">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Client" class="w-12 h-12 rounded-full border-2 border-cyan-500">
+                    <div>
+                        <h4 class="text-white font-bold">Alex Johnson</h4>
+                        <p class="text-xs text-slate-500 uppercase font-semibold tracking-wider">CEO, TechNova</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 p-8 rounded-3xl border border-slate-700 hover:border-cyan-500 transition-all duration-300 relative group">
+                <div class="absolute -top-4 -right-4 bg-cyan-500 text-slate-900 w-10 h-10 rounded-full flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+                <div class="flex text-amber-400 mb-4 text-sm">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-slate-300 italic mb-6 leading-relaxed">"The ROI we got from their Google Ads campaign was insane. They really know how to target the right audience. Best decision ever."</p>
+                <div class="flex items-center space-x-4">
+                    <img src="https://i.pravatar.cc/150?img=32" alt="Client" class="w-12 h-12 rounded-full border-2 border-cyan-500">
+                    <div>
+                        <h4 class="text-white font-bold">Sarah Miller</h4>
+                        <p class="text-xs text-slate-500 uppercase font-semibold tracking-wider">Marketing Manager, FashionHub</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 p-8 rounded-3xl border border-slate-700 hover:border-cyan-500 transition-all duration-300 relative group">
+                <div class="absolute -top-4 -right-4 bg-cyan-500 text-slate-900 w-10 h-10 rounded-full flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+                <div class="flex text-amber-400 mb-4 text-sm">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-slate-300 italic mb-6 leading-relaxed">"Their content strategy helped us build brand authority in our niche. The engagement on social media is better than ever."</p>
+                <div class="flex items-center space-x-4">
+                    <img src="https://i.pravatar.cc/150?img=12" alt="Client" class="w-12 h-12 rounded-full border-2 border-cyan-500">
+                    <div>
+                        <h4 class="text-white font-bold">David Wilson</h4>
+                        <p class="text-xs text-slate-500 uppercase font-semibold tracking-wider">Founder, GreenLife</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-20 pt-10 border-t border-slate-800">
+            <p class="text-slate-500 text-sm uppercase tracking-widest mb-8">Trusted by global companies</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
+                <i class="fab fa-google text-4xl text-white"></i>
+                <i class="fab fa-amazon text-4xl text-white"></i>
+                <i class="fab fa-spotify text-4xl text-white"></i>
+                <i class="fab fa-microsoft text-4xl text-white"></i>
+                <i class="fab fa-slack text-4xl text-white"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="contact" class="py-24 relative overflow-hidden parallax-bg" 
+         style="background-image: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1920');">
+    
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            
+            <div class="lg:w-1/2 text-white">
+                <h4 class="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-4">Contact Us</h4>
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">Let’s Start a <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Big Project</span> Together</h2>
+                <p class="text-slate-400 text-lg mb-10 leading-relaxed">
+                    Ready to take your business to the next level? Reach out to us today and let's discuss how our digital marketing strategies can drive results for you.
+                </p>
+
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-cyan-400 shadow-lg">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Call Us</p>
+                            <p class="text-xl font-semibold">+880 173 659 0876</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-cyan-400 shadow-lg">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Email Address</p>
+                            <p class="text-xl font-semibold">elizabeth.sathi2024@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-cyan-400 shadow-lg">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-500">Office Location</p>
+                            <p class="text-xl font-semibold">Dhaka, Bangladesh</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 mt-10">
+                    <a href="#" class="w-10 h-10 border border-slate-700 rounded-full flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 border border-slate-700 rounded-full flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="w-10 h-10 border border-slate-700 rounded-full flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-10 h-10 border border-slate-700 rounded-full flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 w-full">
+                <div class="bg-slate-800/40 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-slate-700 shadow-2xl">
+                    <form action="#" class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-slate-400 text-sm mb-2">Full Name</label>
+                                <input type="text" placeholder="John Doe" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-slate-400 text-sm mb-2">Email Address</label>
+                                <input type="email" placeholder="john@example.com" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-all">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Subject</label>
+                            <select class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-all">
+                                <option>SEO Optimization</option>
+                                <option>Social Media Marketing</option>
+                                <option>PPC & Ads</option>
+                                <option>Content Strategy</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Message</label>
+                            <textarea rows="4" placeholder="How can we help you?" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-all"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-900 font-bold py-4 rounded-xl shadow-lg transform transition-all active:scale-95">
+                            Send Message <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <footer class="py-8 bg-slate-950 text-slate-500 text-center text-sm border-t border-slate-900">
+        <p>&copy; 2026 SathiEliza. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+    // Elements
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    // Open Menu
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-full');
+    });
+
+    // Close Menu
+    closeBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+    });
+
+    // Close Menu when a link is clicked
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('translate-x-full');
+        });
+    });
+
+    // Navbar Background Change on Scroll
+    window.addEventListener('scroll', function() {
+        const nav = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+            nav.classList.add('shadow-lg');
+        } else {
+            nav.classList.remove('scrolled');
+            nav.classList.remove('shadow-lg');
+        }
+    });
+
+    // Particles.js Config (আগের মতই থাকবে)
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#00d2ff" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": false },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#00d2ff", "opacity": 0.2, "width": 1 },
+            "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+            "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } } }
+        },
+        "retina_detect": true
+    });
+
+
+    // Portfolio Filter Logic
+const filterButtons = document.querySelectorAll('.filter-btn');
+const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons and add to clicked one
+        filterButtons.forEach(btn => {
+            btn.classList.remove('bg-slate-900', 'text-white', 'border-slate-900');
+            btn.classList.add('border-slate-200');
+        });
+        button.classList.add('bg-slate-900', 'text-white', 'border-slate-900');
+        button.classList.remove('border-slate-200');
+
+        const filterValue = button.getAttribute('data-filter');
+
+        portfolioItems.forEach(item => {
+            if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                item.style.display = 'block';
+                setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 10);
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.8)';
+                setTimeout(() => { item.style.display = 'none'; }, 300);
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
